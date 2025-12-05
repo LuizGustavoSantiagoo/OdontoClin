@@ -1,3 +1,5 @@
+'use client'
+import { useState } from "react";
 import Link from "next/link";
 import {
   Sheet,
@@ -8,9 +10,53 @@ import {
   SheetTrigger,
 } from "./ui/sheet";
 import { Button } from "./ui/button";
-import { Menu } from "lucide-react";
+import { LogIn, Menu } from "lucide-react";
 
 export function Header() {
+
+  const [isOpen, setIsOpen] = useState(false);
+  const session = true;
+
+  const navItems = [
+    { name: "Profissionais", href: "#" }
+  ];
+
+  const NavLinks = () => (
+    <>
+      {navItems.map((item) => (
+        <Button
+          onClick={() => setIsOpen(false)}
+          key={item.href}
+          asChild
+          className="bg-transparent text-black hover:bg-transparent hover:text-emerald-500 hover:underline  shadow-none"
+        >
+          <Link href={item.href}>{item.name}</Link>
+        </Button>
+      ))}
+
+      {session ? (
+        <Button
+          onClick={() => setIsOpen(false)}
+          asChild
+          className="bg-transparent text-black hover:bg-transparent hover:text-emerald-500 hover:underline  shadow-none"
+        >
+          <Link href="/dashboard">Dashboard</Link>
+        </Button>
+      ) : (
+        <Button
+          onClick={() => setIsOpen(false)}
+          asChild
+          className="bg-emerald-500 text-white hover:bg-emerald-600 shadow-none"
+        >
+          <Link href="/login">
+           <LogIn />
+          Login</Link>
+        </Button>
+      )}
+
+    </>
+  );
+
   return (
     <header className="fixed top-0 right-0 left-0 z-[999] py-4 px-6 bg-white shadow-lg">
       <div className="container mx-auto flex items-center justify-between">
@@ -18,11 +64,11 @@ export function Header() {
           Odonto<span className="text-emerald-500">PRO</span>
         </Link>
 
-        <nav className="hidden md:flex items-center">
-          <a href="">Profissionais</a>
+      <nav className="hidden md:flex items-center space-x-4">
+          <NavLinks />
         </nav>
 
-        <Sheet>
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild className="md:hidden">
             <Button
               className="text-black hover:bg-black hover:text-white"
@@ -40,8 +86,8 @@ export function Header() {
               </SheetDescription>
             </SheetHeader>
 
-            <nav className="ml-5 underline">
-              <a href="">Profissionais</a>
+            <nav className="flex flex-col space-y-4">
+              <NavLinks />
             </nav>
           </SheetContent>
         </Sheet>
