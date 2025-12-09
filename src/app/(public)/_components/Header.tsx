@@ -8,8 +8,8 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "./ui/sheet";
-import { Button } from "./ui/button";
+} from "../../../components/ui/sheet";
+import { Button } from "../../../components/ui/button";
 import { LogIn, Menu } from "lucide-react";
 
 export function Header() {
