@@ -1,9 +1,10 @@
 "use client"
 import { useState } from "react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
-import { CalendarCheck2, Link, List } from "lucide-react";
-import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { CalendarCheck2, List, StethoscopeIcon } from "lucide-react";
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 
 export function SidebarDashboard({ children }: { children: React.ReactNode }) {
@@ -16,7 +17,7 @@ export function SidebarDashboard({ children }: { children: React.ReactNode }) {
 
             <div className={
                 clsx("flex flex-1 flex-col transition-all duration-300", {
-                    "md: ml-20": isOpen,
+                    "md:ml-20": isOpen,
                     "md:ml-64": !isOpen
                 })}>
 
@@ -37,7 +38,7 @@ export function SidebarDashboard({ children }: { children: React.ReactNode }) {
 
                         <SheetContent side="right" className="sm:max-w-xs text-black">
                             <SheetTitle className="mb-4 text-lg font-bold text-center">
-                                <h2 className="text-base font-semibold mt-3 underline">Menu</h2>
+                                <span className="text-base font-semibold mt-3 underline">Menu</span>
                             </SheetTitle>
 
                             <nav className="grid gap-6 text-base pt-5">
@@ -47,6 +48,14 @@ export function SidebarDashboard({ children }: { children: React.ReactNode }) {
                                     icon={<CalendarCheck2 />}
                                     pathname={pathname}
                                     isOpen={isOpen}
+                                />
+
+                                <SidebarLink 
+                                href="/dashboard/services"
+                                label="Services"
+                                icon={<StethoscopeIcon />}
+                                pathname={pathname}
+                                isOpen={isOpen}
                                 />
                             </nav>
                         </SheetContent>
@@ -73,11 +82,24 @@ interface SidebarItemProps {
 function SidebarLink({ href, label, icon, pathname, isOpen }: SidebarItemProps) {
 
     return (
-        <div className="flex items-center gap-2 bg-blue-500 px-3 py-2 rounded-md text-white">
-            <Link href={href}>
-                <span className="w-6 h-6">{icon}</span>
-                {!isOpen && <span className="text-white">{label}</span>}
-            </Link>
-        </div>
+        <Link
+            href={href}
+            className={
+                clsx(
+                    "flex items-center gap-3 rounded-md px-3 py-2 transition-colors mx-2",
+                    {
+                        "bg-emerald-100 text-emerald-600": pathname === href,
+                        "text-slate-600 hover:bg-slate-100 hover:text-slate-900": pathname !== href
+                    }
+                )
+            }
+        >
+            <span className="text-xl text-current">
+                {icon}
+            </span>
+            <span className={clsx("text-sm font-medium", { "md:hidden": !isOpen })}>
+                {label}
+            </span>
+        </Link>
     );
 }
