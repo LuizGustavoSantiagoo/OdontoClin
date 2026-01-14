@@ -11,15 +11,22 @@ import {
 } from "../../../components/ui/sheet";
 import { Button } from "../../../components/ui/button";
 import { LogIn, Menu } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { handleRegister } from "../_actions/Login"
 
 export function Header() {
 
+  const { data: session, status } = useSession();
   const [isOpen, setIsOpen] = useState(false);
-  const session = true;
 
   const navItems = [
     { name: "Profissionais", href: "#" }
   ];
+
+
+  async function handleLogin() {
+    await handleRegister("github");
+  }
 
   const NavLinks = () => (
     <>
@@ -34,7 +41,7 @@ export function Header() {
         </Button>
       ))}
 
-      {session ? (
+      {status === 'loading' ? (<></> ) : session ? (
         <Button
           onClick={() => setIsOpen(false)}
           asChild
@@ -44,13 +51,11 @@ export function Header() {
         </Button>
       ) : (
         <Button
-          onClick={() => setIsOpen(false)}
-          asChild
+          onClick={handleLogin}
           className="bg-emerald-500 text-white hover:bg-emerald-600 shadow-none"
         >
-          <Link href="/login">
-           <LogIn />
-          Login</Link>
+          <LogIn />
+          Login
         </Button>
       )}
 
@@ -64,7 +69,7 @@ export function Header() {
           Odonto<span className="text-emerald-500">PRO</span>
         </Link>
 
-      <nav className="hidden md:flex items-center space-x-4">
+        <nav className="hidden md:flex items-center space-x-4">
           <NavLinks />
         </nav>
 
