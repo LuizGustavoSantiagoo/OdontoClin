@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth"
 import { redirect } from "next/navigation";
 import { getUserData } from "./_data-acess/get-info-user";
+import { ProfileContent } from "./_components/profile";
 
 export default async function Profile() {
 
@@ -17,11 +18,6 @@ export default async function Profile() {
   }
 
   return (
-    <section>
-      <div>
-        <h1>Dashboard</h1>
-        <p>Welcome to your Profile</p>
-      </div>
-    </section>
+    <ProfileContent />
   );
 }

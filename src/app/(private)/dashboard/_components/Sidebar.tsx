@@ -18,7 +18,7 @@ import {
 export function SidebarDashboard({ children }: { children: React.ReactNode }) {
 
     const pathname = usePathname();
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(true);
 
     return (
         <div className="flex min-h-screen w-full">
