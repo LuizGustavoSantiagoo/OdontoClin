@@ -3,7 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
-import { CalendarCheck2, ChevronLeft, ChevronRight, List, StethoscopeIcon } from "lucide-react";
+import { CalendarCheck2, ChevronLeft, Settings, List, StethoscopeIcon, Settings2 } from "lucide-react";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
@@ -18,7 +18,7 @@ import {
 export function SidebarDashboard({ children }: { children: React.ReactNode }) {
 
     const pathname = usePathname();
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(true);
 
     return (
         <div className="flex min-h-screen w-full">
@@ -76,6 +76,14 @@ export function SidebarDashboard({ children }: { children: React.ReactNode }) {
                                 pathname={pathname}
                                 isOpen={isOpen}
                             />
+
+                            <SidebarLink
+                                href="/dashboard/profile"
+                                label="Profile"
+                                icon={<Settings2 />}
+                                pathname={pathname}
+                                isOpen={isOpen}
+                            />
                         </nav>
                     )
                 }
@@ -84,12 +92,12 @@ export function SidebarDashboard({ children }: { children: React.ReactNode }) {
                     <CollapsibleContent>
                         <nav className="flex flex-col gap-1 overflow-hidden">
                             <span className="text-sm text-gray-400 font-medium mt-1 uppercase">
-                                Painel
+                                Panel
                             </span>
 
                             <SidebarLink
                                 href="/dashboard"
-                                label="Agendamentos"
+                                label="Appointments"
                                 icon={<CalendarCheck2 />}
                                 pathname={pathname}
                                 isOpen={isOpen}
@@ -99,6 +107,17 @@ export function SidebarDashboard({ children }: { children: React.ReactNode }) {
                                 href="/dashboard/services"
                                 label="Services"
                                 icon={<StethoscopeIcon />}
+                                pathname={pathname}
+                                isOpen={isOpen}
+                            />
+
+                            <span className="text-sm text-gray-400 font-medium mt-1 uppercase">
+                                Account
+                            </span>
+                            <SidebarLink
+                                href="/dashboard/profile"
+                                label="Profile"
+                                icon={<Settings2 />}
                                 pathname={pathname}
                                 isOpen={isOpen}
                             />
@@ -147,6 +166,17 @@ export function SidebarDashboard({ children }: { children: React.ReactNode }) {
                                     href="/dashboard/services"
                                     label="Services"
                                     icon={<StethoscopeIcon />}
+                                    pathname={pathname}
+                                    isOpen={isOpen}
+                                />
+
+                                <span className="text-sm text-gray-400 font-medium mt-1 uppercase text-center">
+                                    Account
+                                </span>
+                                <SidebarLink
+                                    href="/dashboard/profile"
+                                    label="Profile"
+                                    icon={<Settings2 />}
                                     pathname={pathname}
                                     isOpen={isOpen}
                                 />
