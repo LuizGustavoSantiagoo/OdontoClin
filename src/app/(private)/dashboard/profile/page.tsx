@@ -18,6 +18,6 @@ export default async function Profile() {
   }
 
   return (
-    <ProfileContent />
+    <ProfileContent user={user}/>
   );
 }
