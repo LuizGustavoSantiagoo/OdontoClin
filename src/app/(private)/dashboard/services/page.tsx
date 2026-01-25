@@ -1,7 +1,7 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { getUserData } from "../profile/_data-acess/get-info-user";
-import { ServicesContent } from "./_components/data-acess";
+import { ServicesContent } from "./_components/service-content";
 
 export default async function Service() {
 
@@ -19,5 +19,6 @@ export default async function Service() {
 
     return(
         <ServicesContent UserId={session?.user?.id!} />
+        
     );     
 }
