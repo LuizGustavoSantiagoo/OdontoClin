@@ -7,7 +7,7 @@ interface UseProfileFormProps {
     address: string | null;
     phone: string | null;
     status: boolean;
-    timezone: string | null;
+    timeZone: string | null;
 }
 
 const profileSchema = z.object({
@@ -20,7 +20,7 @@ const profileSchema = z.object({
 
 export type ProfileFormData = z.infer<typeof profileSchema>
 
-export function useProfileForm({address, name, phone, status, timezone}: UseProfileFormProps) {
+export function useProfileForm({ address, name, phone, status, timeZone }: UseProfileFormProps) {
     return useForm<ProfileFormData>({
         resolver: zodResolver(profileSchema),
         defaultValues: {
@@ -28,7 +28,7 @@ export function useProfileForm({address, name, phone, status, timezone}: UseProf
             address: address || "",
             phone: phone || "",
             status: status ? "ATIVO" : "INATIVO",
-            timezone: timezone || "",
+            timezone: timeZone || "",
         }
     })
 }
