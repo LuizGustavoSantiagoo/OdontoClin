@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { ProfileFormData, useProfileForm } from "./profile-form";
 import { Card, CardContent, CardTitle, CardHeader } from "@/components/ui/card";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectItem, SelectContent, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
@@ -16,35 +16,39 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Prisma } from "@/generated/prisma/client";
 import { updateProfile } from "../_actions/update_profile";
 import { toast } from "sonner";
 import { cleanPhone, formatPhone } from "@/utils/formatPhone";
+import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export type userWithSubscription = Prisma.UserGetPayload<{
     include: {
-        subscription:true
+        subscription: true
     }
-}> 
+}>
 
 interface ProfileContentProps {
     user: userWithSubscription;
 }
 
-export function ProfileContent({user} : ProfileContentProps) {
+export function ProfileContent({ user }: ProfileContentProps) {
 
+    const router = useRouter();
     const [selectedHours, setSelectedHours] = useState<string[]>(user.times ?? []);
     const [dialogIsOpen, setDialog] = useState(false);
+    const { update } = useSession();
 
     const form = useProfileForm({
         name: user.name,
         address: user.address,
         phone: user.phone,
         status: user.status,
-        timezone: user.timeZone
+        timeZone: user.timezone
     });
 
     function generateTimeSlots(): string[] {
@@ -92,12 +96,18 @@ export function ProfileContent({user} : ProfileContentProps) {
             times: selectedHours || [],
         });
 
-        if(response.erro) {
-            toast.warning(response.erro, {closeButton: true, position: "top-center"})
-            return; 
+        if (response.erro) {
+            toast.warning(response.erro, { closeButton: true, position: "top-center" })
+            return;
         }
 
-        toast.success(response.data, {closeButton: true, position: "top-center"})
+        toast.success(response.data, { closeButton: true, position: "top-center" })
+    }
+
+    async function handleLogout() {
+        signOut();
+        await update();
+        router.replace("/");
     }
 
     return (
@@ -166,10 +176,10 @@ export function ProfileContent({user} : ProfileContentProps) {
                                                 </Label>
                                                 <FormControl>
                                                     <Input placeholder="Digite seu telefone" {...field}
-                                                    onChange={(e) => {
-                                                        const formattedValue = formatPhone(e.target.value)
-                                                        field.onChange(formattedValue)
-                                                    }}></Input>
+                                                        onChange={(e) => {
+                                                            const formattedValue = formatPhone(e.target.value)
+                                                            field.onChange(formattedValue)
+                                                        }}></Input>
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -290,10 +300,10 @@ export function ProfileContent({user} : ProfileContentProps) {
                                 </div>
 
                                 <Button
-                                type="submit"
-                                className="w-full bg-emerald-500 text-white"
-                                variant={"outline"}>
-                                        Salvar
+                                    type="submit"
+                                    className="w-full bg-emerald-500 text-white"
+                                    variant={"outline"}>
+                                    Salvar
                                 </Button>
 
                             </div>
@@ -301,6 +311,13 @@ export function ProfileContent({user} : ProfileContentProps) {
                     </Card>
                 </form>
             </Form>
+            <section className="mt-4">
+                <Button 
+                variant="destructive"
+                onClick={() => {handleLogout()}}>
+                    Sair da conta  <LogOut className="w-5 h-5"/>
+                </Button>
+            </section>
         </div>
     )
 }
