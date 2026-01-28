@@ -13,7 +13,7 @@ interface user {
     email: string;
     emailVerified?: Boolean | string| null;
     image?: string;
-    stripe_customer_id?: string 
+    stripe_customer_id?: string;
     times: string[];
     adress?: string;
     phone?: string;
