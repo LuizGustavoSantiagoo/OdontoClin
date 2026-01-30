@@ -1,17 +1,19 @@
 import { redirect } from "next/navigation";
 import { getInfoSchedule } from "./_data-access/get-info-schedule";
+import { ScheduleContent } from "./_components/schedule-content";
 
 export default async function SchedulePage({params, } : {params: Promise<{id: string}>}) {
 
     const userId = (await params).id;
 
-    const infoSchedule = await getInfoSchedule({ userId: userId });
+    const user = await getInfoSchedule({ userId: userId });
+    console.log(user);
     
-    if(!infoSchedule) {
+    if(!user) {
         redirect("/")
     }
 
     return (
-        <div></div>
+        <ScheduleContent clinic={user} />
     )
 }
